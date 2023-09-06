@@ -64,7 +64,7 @@
             document.getElementById('button2').innerText = `${count2} translation${translation_suffix2}`;
 
             if (count1 === count2) {
-                text = `Draw`;
+                text = `Draw.`;
                 document.getElementById('result').classList.add('text-green-500');
             } else {
                 
@@ -81,13 +81,13 @@
 
             let delay = 3;
             document.getElementById('result').innerText = `${text} Next in ${delay}…`;
-            setInterval(() => {
-                delay -= 1;
-                if (delay === 0) {
-                    location.reload();
-                }
-                document.getElementById('result').innerText = `${text} Next in ${delay}…`;
-            }, 1000);
+            // setInterval(() => {
+            //     delay -= 1;
+            //     if (delay === 0) {
+            //         location.reload();
+            //     }
+            //     document.getElementById('result').innerText = `${text} Next in ${delay}…`;
+            // }, 1000);
         }
         
         async function getRandomWikipediaArticles() {
@@ -161,10 +161,10 @@
             document.getElementById("article2-h").innerHTML = `<a href=${article2.pageUrl}>${article2.title}</a>`;
             document.getElementById("article2-p").innerHTML = article2.abstract + ` <a class="underline text-gray-500 italic" href=${article2.pageUrl}>Read more…</a>`;;
             getTranslationCount(article1.wikidataEntity)
-            .then(count => count1 = count)
+            .then(count => count1 = parseInt(count))
             .catch(error => console.error('Error:', error));
             getTranslationCount(article2.wikidataEntity)
-            .then(count => count2 = count)
+            .then(count => count2 = parseInt(count))
             .catch(error => console.error('Error:', error));
         })
         .catch(console.error);
