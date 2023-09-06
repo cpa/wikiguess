@@ -68,7 +68,7 @@
                 document.getElementById('result').classList.add('text-green-500');
             } else {
                 
-                let correct = count1 > count2 && articleNumber === 1;
+                let correct = (count1 > count2 && articleNumber === 1) || (count1 < count2 && articleNumber === 2);
 
                 if (correct) {
                     text = `Indeed!`;
