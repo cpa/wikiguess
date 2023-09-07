@@ -94,7 +94,7 @@
             document.getElementById('result').innerText = `${text} Next in ${delay}…`;
             setInterval(() => {
                 delay -= 1;
-                if (delay === 0) {
+                if (delay === 1) {
                     location.reload();
                 }
                 document.getElementById('result').innerText = `${text} Next in ${delay}…`;
