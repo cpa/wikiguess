@@ -69,14 +69,13 @@
         
         function guess(articleNumber) {
             document.getElementById("result").scrollIntoView({"behavior": "smooth"});
-            translation_suffix1 = (count1 == 1) ? '' : 's';
-            translation_suffix2 = (count2 == 1) ? '' : 's';
-            document.getElementById('button1').innerText = `${count1} translation${translation_suffix1}`;
-            document.getElementById('button2').innerText = `${count2} translation${translation_suffix2}`;
             
             if (count1 === count2) {
                 text = `Draw.`;
                 document.getElementById('result').classList.add('text-green-500');
+                translation_prefix1 = '';
+                translation_prefix2 = '';
+
             } else {
                 
                 let correct = (count1 > count2 && articleNumber === 1) || (count1 < count2 && articleNumber === 2);
@@ -88,7 +87,21 @@
                     text = `Nope.`;
                     document.getElementById('result').classList.add('text-orange-500');
                 }
+
+                if (correct && articleNumber === 1) {
+                    translation_prefix1 = '✔ ';
+                    translation_prefix2 = '✘ ';
+                } else {
+                    translation_prefix1 = '✘ ';
+                    translation_prefix2 = '✔ ';
+                }
             }
+
+
+            translation_suffix1 = (count1 == 1) ? '' : 's';
+            translation_suffix2 = (count2 == 1) ? '' : 's';
+            document.getElementById('button1').innerText = `${translation_prefix1} ${count1} translation${translation_suffix1}`;
+            document.getElementById('button2').innerText = `${translation_prefix2} ${count2} translation${translation_suffix2}`;
             
             let delay = 3;
             document.getElementById('result').innerText = `${text} Next in ${delay}…`;
