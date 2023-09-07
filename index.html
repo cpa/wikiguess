@@ -11,6 +11,7 @@
     <meta property="og:type" content="article">
     <meta property="og:description" content="A game where you guess which of two wikipedia pages exist in the most languages">
     <meta property="og:site_name" content="charlespierre.fr">
+    <link rel="canonical" href="https://wikilingua.charlespierre.fr">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Wikipedia Guessing Game</title>
@@ -34,7 +35,7 @@
                         <button
                         id="button1"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-full"
-                        onclick="guess(1)">This has the most translations</button>
+                        onclick="guess(1)">This is documented in more languages</button>
                     </div>
                 </div>
                 
@@ -47,13 +48,13 @@
                         <button
                         id="button2"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-full"
-                        onclick="guess(2)">This has the most translations</button>
+                        onclick="guess(2)">This is documented in more languages</button>
                     </div>
                 </div>
             </div>
             
             <div class="pt-4 pb-3 border-t border-gray-200">
-                <div id="result" class="text-center font-bold text-purple-500 text-2xl"></div>
+                <div id="result" class="text-center font-bold text-2xl"></div>
             </div>
             
         </div>
@@ -93,7 +94,7 @@
                     translation_prefix2 = '✘ ';
                 } else {
                     translation_prefix1 = '✘ ';
-                    translation_prefix2 = '✔ ';
+                    translation_prefix2 = '✔︎ ';
                 }
             }
 
@@ -103,7 +104,7 @@
             document.getElementById('button1').innerText = `${translation_prefix1} ${count1} translation${translation_suffix1}`;
             document.getElementById('button2').innerText = `${translation_prefix2} ${count2} translation${translation_suffix2}`;
             
-            let delay = 3;
+            let delay = 4;
             document.getElementById('result').innerText = `${text} Next in ${delay}…`;
             setInterval(() => {
                 delay -= 1;
@@ -181,9 +182,9 @@
             article1 = articles[0];
             article2 = articles[1];
             document.getElementById("article1-h").innerHTML = `<a href="${article1.pageUrl}" target="_blank">${article1.title}</a>`;
-            document.getElementById("article1-p").innerHTML = article1.abstract + ` <a class="underline text-gray-500 italic" href="${article1.pageUrl}" target="_blank">Read more…</a>`;
+            document.getElementById("article1-p").innerHTML = article1.abstract + ` <a class="hover:no-underline underline text-gray-500 italic" href="${article1.pageUrl}" target="_blank">Read more…</a>`;
             document.getElementById("article2-h").innerHTML = `<a href="${article2.pageUrl}" target="_blank">${article2.title}</a>`;
-            document.getElementById("article2-p").innerHTML = article2.abstract + ` <a class="underline text-gray-500 italic" href="${article2.pageUrl}" target="_blank">Read more…</a>`;;
+            document.getElementById("article2-p").innerHTML = article2.abstract + ` <a class="hover:no-underline underline text-gray-500 italic" href="${article2.pageUrl}" target="_blank">Read more…</a>`;;
             getTranslationCount(article1.wikidataEntity)
             .then(count => count1 = parseInt(count))
             .catch(error => console.error('Error:', error));
