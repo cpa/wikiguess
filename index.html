@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A game where you guess which of two wikipedia pages exist in the most languages">
+    <meta name="robots" content="follow"/>
+    <meta name="og:title" property="og:title" content="Wikipedia Guessing Game"> 
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="A game where you guess which of two wikipedia pages exist in the most languages" />
+    <meta property="og:site_name" content="charlespierre.fr" />
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Wikipedia Guessing Game</title>
 </head>
@@ -12,34 +19,34 @@
     <div class="flex flex-wrap justify-center">
         <div class="w-full xl:max-w-5xl p-2 xl:m-2 bg-white shadow-md rounded-lg overflow-hidden">
             <div class="xl:py-4 xl:px-6">
-                <h2 class="text-center font-bold text-3xl uppercase text-gray-700">Wikipedia Guessing Game</h2>
+                <h1 class="text-center font-bold text-3xl uppercase text-gray-800">Wikipedia Guessing Game</h1>
                 <p class="mt-1 text-center text-gray-600">Which of these two Wikipedia pages exist in the most languages?</p>
             </div>
             
             <div class="flex flex-col lg:flex-row px-5 pt-3 mb-4">
                 <div class="flex flex-col w-full bg-white p-4 border-2 border-emerald-200 shadow rounded-lg mb-6 mr-2 xl:mr-6">
                     <div class="grow mb-4">
-                        <h3 class="font-bold text-2xl mb-4" id="article1-h"></h3>
+                        <h2 class="text-gray-800 font-bold text-2xl mb-4" id="article1-h"></h2>
                         <p id="article1-p"></p>
                     </div>
                     <div class="flex flex-none items-center flex-col mt-auto">
                         <button
                         id="button1"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-full"
-                        onclick="guess(1)">I think this has the most translations</button>
+                        onclick="guess(1)">This has the most translations</button>
                     </div>
                 </div>
                 
                 <div class="flex flex-col w-full bg-white p-4 border-2 border-emerald-200 shadow rounded-lg mb-6">
                     <div class="grow mb-4">
-                        <h3 class="font-bold text-2xl mb-4" id="article2-h"></h3>
+                        <h2 class="text-gray-800 font-bold text-2xl mb-4" id="article2-h"></h2>
                         <p id="article2-p"></p>
                     </div>
                     <div class="flex flex-none items-center flex-col mt-auto">
                         <button
                         id="button2"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-full"
-                        onclick="guess(2)">I think this has the most translations</button>
+                        onclick="guess(2)">This has the most translations</button>
                     </div>
                 </div>
             </div>
@@ -50,26 +57,29 @@
             
         </div>
     </div>
-    <footer class="p-3 mt-6 border-gray-200 text-center">
-        <a href="https://twitter.com/charlespierre" target="_blank">made by @charlespierre</a>
+    <footer class="text-sm p-3 mt-6 border-gray-200 text-center">
+        made by <a href="https://charlespierre.fr" target="_blank">cpa</a> <a href="https://twitter.com/charlespierre" target="_blank">
+            <svg style="display: inline;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+            </a>
     </footer>
     
     <script>
         let count1, count2, article1, article2;
-
+        
         function guess(articleNumber) {
+            document.getElementById("result").scrollIntoView({"behavior": "smooth"});
             translation_suffix1 = (count1 == 1) ? '' : 's';
             translation_suffix2 = (count2 == 1) ? '' : 's';
             document.getElementById('button1').innerText = `${count1} translation${translation_suffix1}`;
             document.getElementById('button2').innerText = `${count2} translation${translation_suffix2}`;
-
+            
             if (count1 === count2) {
                 text = `Draw.`;
                 document.getElementById('result').classList.add('text-green-500');
             } else {
                 
                 let correct = (count1 > count2 && articleNumber === 1) || (count1 < count2 && articleNumber === 2);
-
+                
                 if (correct) {
                     text = `Indeed!`;
                     document.getElementById('result').classList.add('text-green-500');
@@ -78,7 +88,7 @@
                     document.getElementById('result').classList.add('text-orange-500');
                 }
             }
-
+            
             let delay = 3;
             document.getElementById('result').innerText = `${text} Next in ${delay}…`;
             setInterval(() => {
@@ -98,7 +108,7 @@
                 
                 const result = articles.map(async(article) => {
                     const { id, title } = article;
-                    const pageUrl = `https://en.wikipedia.org/?curid=${id}`;
+                    const pageUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/ /g, '_'))}`;
                     
                     const summaryResponse = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
                     const summaryData = await summaryResponse.json();
@@ -156,10 +166,10 @@
         .then((articles) => {
             article1 = articles[0];
             article2 = articles[1];
-            document.getElementById("article1-h").innerHTML = `<a href=${article1.pageUrl}>${article1.title}</a>`;
-            document.getElementById("article1-p").innerHTML = article1.abstract + ` <a class="underline text-gray-500 italic" href=${article1.pageUrl}>Read more…</a>`;
-            document.getElementById("article2-h").innerHTML = `<a href=${article2.pageUrl}>${article2.title}</a>`;
-            document.getElementById("article2-p").innerHTML = article2.abstract + ` <a class="underline text-gray-500 italic" href=${article2.pageUrl}>Read more…</a>`;;
+            document.getElementById("article1-h").innerHTML = `<a href="${article1.pageUrl}" target="_blank">${article1.title}</a>`;
+            document.getElementById("article1-p").innerHTML = article1.abstract + ` <a class="underline text-gray-500 italic" href="${article1.pageUrl}" target="_blank">Read more…</a>`;
+            document.getElementById("article2-h").innerHTML = `<a href="${article2.pageUrl}" target="_blank">${article2.title}</a>`;
+            document.getElementById("article2-p").innerHTML = article2.abstract + ` <a class="underline text-gray-500 italic" href="${article2.pageUrl}" target="_blank">Read more…</a>`;;
             getTranslationCount(article1.wikidataEntity)
             .then(count => count1 = parseInt(count))
             .catch(error => console.error('Error:', error));
